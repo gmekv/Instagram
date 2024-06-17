@@ -5,58 +5,74 @@
 //  Created by Giorgi Mekvabishvili on 01.06.24.
 //
 
+import Kingfisher
 import SwiftUI
 
 struct ProfileHeaderView: View {
-    let user: User
+    @State private var showEditProfile = false
+    @EnvironmentObject var viewModel: PostGridViewModel
+
     var body: some View {
         VStack(spacing: 10) {
-            //pic and stats
+            // pic and status
             HStack {
-                Image(user.profileImageURL ?? "")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 80, height: 80)
-                    .clipShape(Circle())
+                CircularProfileImageView(user: viewModel.user, size: .large)
                 Spacer()
-                HStack(spacing: 8){
-                    
-                    UserStatView(value: 3, title: "Posts")
-                    UserStatView(value: 3, title: "Followers")
-                    UserStatView(value: 3, title: "Following")
-                }
-            } .padding(.horizontal)
-            //name and bio
+                UserStatView(value: viewModel.postsCount, title: "Posts")
+                UserStatView(value: 1, title: "Followers")
+                UserStatView(value: 2, title: "Following")
+            }
+            .padding(.horizontal)
+            //                .padding(.bottom, 4)
+
+            // Name and Bio
             VStack(alignment: .leading, spacing: 4) {
-                if let fullname = user.fullname {
+                if let fullname = viewModel.user.fullname {
                     Text(fullname)
                         .font(.footnote)
                         .fontWeight(.semibold)
                 }
-                if let bio = user.bio {
+                if let bio = viewModel.user.bio {
                     Text(bio)
                         .font(.footnote)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal)
-            
+
+            // Action Button
             Button {
-                
+                if viewModel.user.isCurrentUser {
+                    showEditProfile.toggle()
+                } else {
+                    print("Follow user...")
+                }
             } label: {
-                Text("Edit Profile")
+                Text(viewModel.user.isCurrentUser ? "Edit Profile" : "Follow")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .frame(width: 360, height: 32)
-                    .foregroundStyle(.black)
-                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.gray, lineWidth: /*@START_MENU_TOKEN@*/1.0/*@END_MENU_TOKEN@*/))
+                    .frame(width: 360, height: 34)
+                    .background(viewModel.user.isCurrentUser ? nil : Color(.systemBlue))
+                    .foregroundColor(viewModel.user.isCurrentUser ? nil : .white)
+                    .cornerRadius(6)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .strokeBorder(viewModel.user.isCurrentUser ?
+                                Color.gray : .clear, lineWidth: 1
+                            )
+                    )
             }
-            
-            
+
             Divider()
-        }    }
+        }
+        .fullScreenCover(isPresented: $showEditProfile) {
+            EditProfileView(user: viewModel.user)
+        }
+    }
 }
 
-#Preview {
-    ProfileHeaderView(user: User.Mock_Users[0])
+struct ProfileHeaderView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileHeaderView()
+    }
 }

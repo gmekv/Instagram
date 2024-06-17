@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject var viewModel = LoginViewModel()
     
     var body: some View {
         NavigationStack {
@@ -21,10 +20,10 @@ struct LoginView: View {
                     .scaledToFit()
                     .frame(width: 220, height: 100)
                 VStack {
-                    TextField("Enter your email", text: $email)
+                    TextField("Enter your email", text: $viewModel.email)
                         .textInputAutocapitalization(.none)
                         .modifier(IGTextFieldModifier())
-                    SecureField("Enter your email", text: $password)
+                    SecureField("Enter your email", text: $viewModel.password)
                         .textInputAutocapitalization(.none)
                         .font(.subheadline)
                         .padding(12)
@@ -45,14 +44,20 @@ struct LoginView: View {
                 
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 Button(action: {
-                    print("login")
-                }) {
-                    Text("Login")
+                    // Initiate the Task for handling asynchronous work
+                    Task {
+                        do {
+                            try await viewModel.signIn()
+                        } catch {
+                            print("Error during sign in: \(error.localizedDescription)")
+                        }
+                    }
+                }) {                 Text("Login")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.white)
+                        .foregroundColor(.white)
                         .frame(width: 360, height: 44)
-                        .background(Color(.systemBlue))
+                        .background(Color.blue)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .padding(.vertical)

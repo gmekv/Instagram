@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct CurrentUserProfileView: View {
+    let user: User
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ProfileView(user: user)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
+                            AuthService.shared.signOut()
+                        } label: {
+                            Image(systemName: "line.3.horizontal")
+                                .foregroundColor(.primary)
+                        }
+                    }
+                }
+        }
     }
 }
 
-#Preview {
-    CurrentUserProfileView()
+struct CurrentUserProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        CurrentUserProfileView(user: User.mock_Users.first!)
+    }
 }

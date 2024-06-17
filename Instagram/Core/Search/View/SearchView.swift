@@ -7,22 +7,19 @@
 
 import SwiftUI
 
+
 struct SearchView: View {
-    @State private var saerchText = ""
-    
+    @State private var searchText = ""
+    @StateObject var viewModel = SearchViewModel()
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    ForEach(User.Mock_Users){ user in
+                    ForEach(viewModel.users) { user in
                         NavigationLink(value: user) {
                             HStack {
-                                Image(user.profileImageURL ?? "")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                                
+                                CircularProfileImageView(user: user, size: .xSmall)
                                 VStack(alignment: .leading) {
                                     Text(user.username)
                                         .fontWeight(.semibold)
@@ -33,21 +30,43 @@ struct SearchView: View {
                                 .font(.footnote)
                                 Spacer()
                             }
-                            .foregroundStyle(.black)
+                            .foregroundColor(.primary)
                             .padding(.horizontal)
-                        }}
+                        }
                     }
-                .padding(.top, 8)
-                .searchable(text: $saerchText, prompt: "Search...")
+                }
             }
-        .navigationDestination(for: User.self, destination: { user in
-            ProfileView(user: user)
-        })
-            .navigationTitle("Explore")
+            .padding(.top, 8)
+            .searchable(text: $searchText, prompt: "Search...")
             .navigationBarTitleDisplayMode(.inline)
-        }}
+            .navigationDestination(for: User.self) { user in
+                ProfileView(user: user)
+            }
+            .navigationTitle("Explore")
+            .onAppear {
+                Task {
+                    try await viewModel.fetchAllUsers()
+                }
+            }
+            .refreshable {
+                Task {
+                    try await viewModel.fetchAllUsers()
+                }
+            }
+        }
+    }
+
+    func profileImage(user: User) -> Image {
+        if let profileImageURL = user.profileImageURL {
+            return Image(profileImageURL)
+        } else {
+            return Image(systemName: "person.circle")
+        }
+    }
 }
 
-#Preview {
-    SearchView()
+struct SearchView_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchView()
+    }
 }

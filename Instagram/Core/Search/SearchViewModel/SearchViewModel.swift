@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+class SearchViewModel: ObservableObject {
+    @Published var users = [User]()
+
+    @MainActor
+    func fetchAllUsers() async throws {
+        self.users = try await UserService.fetchAllUsers()
+    }
+}

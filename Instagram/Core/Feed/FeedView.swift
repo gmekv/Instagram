@@ -5,14 +5,55 @@
 //  Created by Giorgi Mekvabishvili on 26.05.24.
 //
 
+
 import SwiftUI
 
 struct FeedView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    @StateObject var viewModel = FeedViewModel()
+    
+    let user: User
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing: 24) {
+                    ForEach(viewModel.posts) {post in
+                        FeedCell(post: post, user: user) {
+                            Task {
+                                try await viewModel.toggleLike(postId: post.id, uid: user.id)
+                            }
+                        }
+                    }
+                }
+                .padding(.top, 8)
+            }
+            .navigationTitle("Feed")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Image(colorScheme == .light ? "instagram-black" : "instagram-white")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Image(systemName: "paperplane")
+                        .imageScale(.large)
+                }
+            }
+            .onAppear {
+                Task {
+                    try await viewModel.fetchPosts()
+                }
+            }
+        }
     }
 }
 
-#Preview {
-    FeedView()
+struct FeedView_Previews: PreviewProvider {
+    static var previews: some View {
+        FeedView(user: User.mock_Users[0])
+    }
 }
