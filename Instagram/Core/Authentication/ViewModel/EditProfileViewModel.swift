@@ -65,6 +65,8 @@ class EditProfileViewModel: ObservableObject {
         if !bio.isEmpty && user.bio != bio {
             user.bio = bio
             data["bio"] = bio
+            print(user.id)
+            print(user.bio)
         }
         if !data.isEmpty {
             try await Firestore.firestore().collection("users").document(user.id).updateData(data)

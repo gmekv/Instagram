@@ -19,7 +19,7 @@ struct FeedView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 24) {
-                    ForEach(viewModel.posts) {post in
+                    ForEach(viewModel.Feedposts) {post in
                         FeedCell(post: post, user: user) {
                             Task {
                                 try await viewModel.toggleLike(postId: post.id, uid: user.id)

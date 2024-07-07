@@ -31,13 +31,14 @@ struct PostService {
         var posts = [Post]()
         let snapshot = try await postsCollection.whereField("ownerUid", isEqualTo: uid).order(by: "timestamp", descending: true).getDocuments()
         let postUser = try await UserService.fetchUser(withUid: uid)
+        print("Fetching posts for UID: \(uid)")
         for i in snapshot.documents.indices {
             try posts.append(snapshot.documents[i].data(as: Post.self))
             let likedSnapshot = try await snapshot.documents[i].reference.collection("liked").getDocuments()
             posts[i].liked = likedSnapshot.documents.map({ $0.documentID })
             posts[i].user = postUser
+            
         }
-
         return posts
     }
     

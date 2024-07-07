@@ -8,7 +8,7 @@
 import Foundation
 
 class PostGridViewModel: ObservableObject {
-    let user: User
+    @Published var user: User
     @Published var posts = [Post]()
     var isDataFetched = false
 
@@ -22,9 +22,11 @@ class PostGridViewModel: ObservableObject {
 
     @MainActor
     func fetchUserPosts() async throws {
-        if !isDataFetched {
             posts = try await PostService.fetchUserPosts(uid: user.id)
-            isDataFetched = true
-        }
     }
+    
+    @MainActor
+      func updateUser() async throws {
+          self.user = try await UserService.fetchUser(withUid: user.id)
+      }
 }

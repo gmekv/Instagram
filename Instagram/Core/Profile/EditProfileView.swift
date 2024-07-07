@@ -12,7 +12,8 @@ import SwiftUI
 struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel: EditProfileViewModel
-    
+    @EnvironmentObject var postGridViewModel: PostGridViewModel
+
     init(user: User) {
         self._viewModel = StateObject(wrappedValue: EditProfileViewModel(user: user))
     }
@@ -39,6 +40,8 @@ struct EditProfileView: View {
                     Button {
                         Task {
                             try await viewModel.updateUserData()
+                            try await postGridViewModel.updateUser()
+
                             dismiss()
                         }
                     } label: {
