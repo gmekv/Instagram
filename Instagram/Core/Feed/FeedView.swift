@@ -10,7 +10,6 @@ import SwiftUI
 
 struct FeedView: View {
     @Environment(\.colorScheme) var colorScheme
-    
     @StateObject var viewModel = FeedViewModel()
     
     let user: User

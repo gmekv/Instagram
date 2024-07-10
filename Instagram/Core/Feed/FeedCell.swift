@@ -12,7 +12,8 @@ struct FeedCell: View {
     let post: Post
     let user: User
     let onLikeTapped: () -> Void
-    
+    @State private var showComments = false
+
     var body: some View {
         VStack {
             // image + username
@@ -45,8 +46,7 @@ struct FeedCell: View {
                         .foregroundColor(post.liked?.contains(user.id) ?? false ? Color(.systemRed) : .primary)
                 }
                 Button {
-                    print("Comment post")
-
+                    showComments.toggle()
                 } label: {
                     Image(systemName: "bubble.right")
                         .imageScale(.large)
@@ -89,6 +89,9 @@ struct FeedCell: View {
                 .padding(.leading, 10)
                 .padding(.top, 1)
         }
+        .sheet(isPresented: $showComments, content: {
+            CommentsView()
+        })
     }
 }
 
