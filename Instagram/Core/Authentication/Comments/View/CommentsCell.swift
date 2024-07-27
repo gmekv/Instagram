@@ -20,7 +20,7 @@ struct CommentsCell: View {
                 HStack(spacing: 2) {
                     Text(user?.username ?? "")
                         .fontWeight(.semibold)
-                    Text("6D")
+                    Text(comment.timestamp.timestampString())
                         .foregroundStyle(.gray)
                 }
                 Text(comment.commentText)

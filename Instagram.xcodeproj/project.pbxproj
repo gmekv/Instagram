@@ -61,6 +61,8 @@
 		48D594472BFE23D600C6EC4C /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D594462BFE23D600C6EC4C /* FeedCell.swift */; };
 		48DAE40F2C13065600342724 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DAE40E2C13065600342724 /* LoginViewModel.swift */; };
 		48DAE4112C133D7400342724 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DAE4102C133D7400342724 /* UserService.swift */; };
+		48F97CA22C553F0F00299089 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F97CA12C553F0F00299089 /* Timestamp.swift */; };
+		48F97CA72C55415C00299089 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F97CA62C55415C00299089 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +135,8 @@
 		48D594462BFE23D600C6EC4C /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		48DAE40E2C13065600342724 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		48DAE4102C133D7400342724 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		48F97CA12C553F0F00299089 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
+		48F97CA62C55415C00299089 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -323,6 +327,7 @@
 				48D594312BFE072B00C6EC4C /* Services */,
 				48D594072BFE071200C6EC4C /* InstagramApp.swift */,
 				48D5940B2BFE071400C6EC4C /* Assets.xcassets */,
+				48F97CA52C55414000299089 /* Utils */,
 				48D5940D2BFE071400C6EC4C /* Preview Content */,
 			);
 			path = Instagram;
@@ -376,6 +381,7 @@
 			isa = PBXGroup;
 			children = (
 				485CE2632C3E9C1D00055DAB /* DeveloperPreview.swift */,
+				48F97CA12C553F0F00299089 /* Timestamp.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -417,9 +423,8 @@
 		48D594382BFE077F00C6EC4C /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				48D594462BFE23D600C6EC4C /* FeedCell.swift */,
-				48C258572C0362DF00E9A3FB /* FeedView.swift */,
-				4854C3FF2C1F4327000B5C57 /* FeedViewModel.swift */,
+				48F97CA42C5540B700299089 /* FeedViewModel */,
+				48F97CA32C5540A100299089 /* FeedView */,
 			);
 			path = Feed;
 			sourceTree = "<group>";
@@ -477,6 +482,31 @@
 				48B2E4672C16F18200CFE960 /* View */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		48F97CA32C5540A100299089 /* FeedView */ = {
+			isa = PBXGroup;
+			children = (
+				48D594462BFE23D600C6EC4C /* FeedCell.swift */,
+				48C258572C0362DF00E9A3FB /* FeedView.swift */,
+			);
+			path = FeedView;
+			sourceTree = "<group>";
+		};
+		48F97CA42C5540B700299089 /* FeedViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4854C3FF2C1F4327000B5C57 /* FeedViewModel.swift */,
+			);
+			path = FeedViewModel;
+			sourceTree = "<group>";
+		};
+		48F97CA52C55414000299089 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				48F97CA62C55415C00299089 /* Constants.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -635,6 +665,7 @@
 				48D5940A2BFE071200C6EC4C /* ContentView.swift in Sources */,
 				48B2E46C2C16FC6F00CFE960 /* PostGridViewModel.swift in Sources */,
 				485334CC2C3AF33E004E19AA /* CommentsViewModel.swift in Sources */,
+				48F97CA22C553F0F00299089 /* Timestamp.swift in Sources */,
 				48DAE40F2C13065600342724 /* LoginViewModel.swift in Sources */,
 				4854C3FA2C1F3C80000B5C57 /* PostServices.swift in Sources */,
 				4854C3FC2C1F42A0000B5C57 /* SinglePostView.swift in Sources */,
@@ -655,6 +686,7 @@
 				485334C62C3ADA4F004E19AA /* CommentsCell.swift in Sources */,
 				48544A5B2C048F7B00727021 /* IGTextFieldModifier.swift in Sources */,
 				483D2D772C0B493B00FCEB84 /* ProfileHeaderView.swift in Sources */,
+				48F97CA72C55415C00299089 /* Constants.swift in Sources */,
 				48B2E4722C1708A300CFE960 /* EditProfileViewModel.swift in Sources */,
 				483D2D932C0DCD2800FCEB84 /* InstragramApp.swift in Sources */,
 				486C01B82C14D01400C5BF66 /* SearchViewModel.swift in Sources */,

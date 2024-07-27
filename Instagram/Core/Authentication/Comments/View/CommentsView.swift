@@ -48,7 +48,6 @@ struct CommentsView: View {
                     Button(action: {
                         Task {
                            try await viewModel.uploadComment(commentText: commentText)
-                            print("Comment made:", commentText)
                             commentText = ""
                         }
                     }, label: {

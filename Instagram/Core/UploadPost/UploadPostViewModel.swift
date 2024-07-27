@@ -36,7 +36,7 @@ class UploadPostViewModel: ObservableObject {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let uiImage = self.uiImage else { return }
         
-        let postRef = Firestore.firestore().collection("posts").document()
+        let postRef = FirebaseConstants.PostsCollection.document()
         guard let imageUrl = try await ImageUploader.uploadImage(image: uiImage) else { return }
         
         let post = Post(id: postRef.documentID, ownerUid: uid, caption: caption, likes: 0, imageUrl: imageUrl, timestamp: Timestamp())

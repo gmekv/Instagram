@@ -10,7 +10,7 @@ import FirebaseFirestore
 import Foundation
 
 struct PostService {
-    private static let postsCollection = Firestore.firestore().collection("posts")
+    private static let postsCollection = FirebaseConstants.PostsCollection
 
     static func fetchFeedPosts() async throws -> [Post] {
         var posts = [Post]()

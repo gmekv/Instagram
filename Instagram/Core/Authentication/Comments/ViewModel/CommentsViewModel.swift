@@ -25,8 +25,9 @@ class CommentsViewModel: ObservableObject {
         let comment = Comment(postIwnerUiD: post.ownerUid, commentText: commentText, postID: post.id, timestamp: Timestamp(), commentOnwerUid: uid)
         self.comments.append(comment)
         try await service.uploadComment(comment)
-        print("comment upload : \(comment)")
     }
+    
+
     
     func fetchComments() async throws {
         self.comments = try await service.fetchComments()
