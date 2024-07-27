@@ -35,6 +35,9 @@ class EditProfileViewModel: ObservableObject {
         if let bio = user.bio {
             self.bio = bio
         }
+        if let profileImageURL = user.profileImageURL {
+            print("Current profile image URL: \(profileImageURL)")
+        }
     }
 
     @MainActor
@@ -51,9 +54,10 @@ class EditProfileViewModel: ObservableObject {
         var data = [String: Any]()
         
         if let uiImage = uiImage {
-            let imageUrl = try await ImageUploader.uploadImage(image: uiImage)
-            data["profileImageURL"] = imageUrl
-        }
+             let imageUrl = try await ImageUploader.uploadImage(image: uiImage)
+             data["profileImageURL"] = imageUrl
+             print("New profile image URL: \(imageUrl)")
+         }
 
         // update name if changed
         if !fullName.isEmpty && user.fullname != fullName {
@@ -65,8 +69,6 @@ class EditProfileViewModel: ObservableObject {
         if !bio.isEmpty && user.bio != bio {
             user.bio = bio
             data["bio"] = bio
-            print(user.id)
-            print(user.bio)
         }
         if !data.isEmpty {
             try await Firestore.firestore().collection("users").document(user.id).updateData(data)

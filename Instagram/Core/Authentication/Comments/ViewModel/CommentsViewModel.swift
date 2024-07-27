@@ -28,8 +28,6 @@ class CommentsViewModel: ObservableObject {
         print("comment upload : \(comment)")
     }
     
-
-    
     func fetchComments() async throws {
         self.comments = try await service.fetchComments()
         try await fetchUserDataForComments()
