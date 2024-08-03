@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject var viewModel: PostGridViewModel
-    
     let user: User
     
     init(user: User) {
@@ -20,7 +19,7 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             // header
-            ProfileHeaderView()
+            ProfileHeaderView(user: user)
             // post grid view
             PostGridView(posts: viewModel.posts)
         }
