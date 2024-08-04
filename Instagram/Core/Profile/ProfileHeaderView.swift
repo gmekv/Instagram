@@ -16,6 +16,9 @@ struct ProfileHeaderView: View {
         return viewModel.user
     }
     
+    private var stats: UserStats {
+        return user.stats ?? UserStats(followingCount: 0, follwersCount: 0, postsCount: 0)
+    }
     private var isFollowed: Bool {
         return user.isFollowed ?? false
     }
@@ -61,9 +64,9 @@ struct ProfileHeaderView: View {
             HStack {
                 CircularProfileImageView(user: PostviewModel.user, size: .large)
                 Spacer()
-                UserStatView(value: PostviewModel.postsCount, title: "Posts")
-                UserStatView(value: 1, title: "Followers")
-                UserStatView(value: 2, title: "Following")
+                UserStatView(value: stats.postsCount, title: "Posts")
+                UserStatView(value: stats.follwersCount, title: "Followers")
+                UserStatView(value: stats.followingCount, title: "Following")
             }
             .padding(.horizontal)
             //                .padding(.bottom, 4)

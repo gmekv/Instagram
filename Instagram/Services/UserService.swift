@@ -27,3 +27,45 @@ class UserService {
         return try snapshot.data(as: User.self)
     }
 }
+
+extension UserService {
+    static func follow(uid: String) async throws {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        async let _ = try await FirebaseConstants.FollowingCOlelction.document(currentUid).collection("user-following").document(uid).setData([:])
+        
+    }
+    
+    static func unfollow(uid: String) async throws {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        async let _ = try await FirebaseConstants.FollowingCOlelction.document(currentUid).collection("user-following").document(uid).delete()
+    }
+    
+    static func checkIFuserisFollowed(uid: String ) async throws -> Bool {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return false}
+        let snapshot = try await FirebaseConstants.FollowingCOlelction.document(currentUid).collection("user-following").document(uid).getDocument()
+        return snapshot.exists
+    }
+}
+
+
+extension UserService {
+    
+}
+
+// Mark: - User Stats
+
+extension UserService {
+    static func fetchUserStats(uid: String) async throws -> UserStats {
+        async let followingSnapshot = try await FirebaseConstants.FollowingCOlelction.document(uid).collection("user-following").getDocuments()
+        let followCount = try await followingSnapshot.count
+        
+        async let followersSnapshot = try await FirebaseConstants.FollowersCollection.document(uid).collection("user-followes").getDocuments()
+        let followerCount = try await followersSnapshot.count
+        
+        async let postSnapshot = try await FirebaseConstants.PostsCollection.whereField("ownerUid", isEqualTo: uid).getDocuments()
+        let postCount = try await postSnapshot.count
+        
+        return .init(followingCount: followCount, follwersCount: followerCount, postsCount: postCount)
+    }
+}
