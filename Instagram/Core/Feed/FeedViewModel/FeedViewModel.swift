@@ -8,8 +8,12 @@
 import Firebase
 import Foundation
 
+import Firebase
+import FirebaseAuth
+
 class FeedViewModel: ObservableObject {
     @Published var Feedposts = [Post]()
+    private let notificationService = NotificaitonService()
 
     @MainActor
     func fetchPosts() async throws {
@@ -30,6 +34,15 @@ class FeedViewModel: ObservableObject {
             } else {
                 Feedposts[index].likes += 1
                 Feedposts[index].liked!.append(uid)
+                
+                                if Feedposts[index].ownerUid != uid {
+                    notificationService.uploadNotification(
+                        toUid: Feedposts[index].ownerUid,
+                        type: .like,
+                        post: Feedposts[index]
+                    )
+                    print("Notification sent for post: \(postId) to user: \(Feedposts[index].ownerUid)")
+                }
             }
         }
     }
