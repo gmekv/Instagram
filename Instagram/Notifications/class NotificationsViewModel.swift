@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+
+class NotificationsViewModeImage: ObservableObject {
+    @Published var notifcations = [Notification]()
+    init() {
+       fetchNotificaitons()
+    }
+    
+    func fetchNotificaitons() {
+        self.notifcations = DeveloperPreview.shared.notifications
+    }
+}
