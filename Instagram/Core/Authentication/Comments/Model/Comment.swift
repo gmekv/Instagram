@@ -6,7 +6,7 @@
 //
 
 import Firebase
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 struct Comment: Identifiable, Codable {
     @DocumentID var commentID: String?

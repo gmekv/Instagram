@@ -6,7 +6,8 @@
 //
 
 import Firebase
- 
+import FirebaseAuth
+
 @MainActor
 
 class CommentsViewModel: ObservableObject {

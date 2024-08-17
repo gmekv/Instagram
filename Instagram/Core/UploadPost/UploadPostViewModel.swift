@@ -7,6 +7,7 @@
 import Firebase
 import PhotosUI
 import SwiftUI
+import FirebaseAuth   
 
 class UploadPostViewModel: ObservableObject {
     @Published var selectedImage: PhotosPickerItem? {

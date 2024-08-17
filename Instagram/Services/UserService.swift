@@ -1,7 +1,7 @@
 
 import Firebase
 import Foundation
-
+import FirebaseAuth
 
 class UserService {
     

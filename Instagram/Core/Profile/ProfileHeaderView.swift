@@ -117,7 +117,7 @@ struct ProfileHeaderView: View {
             Divider()
         }
         .navigationDestination(for: UserListConfig.self, destination: { config in
-            Text(config.navigationtitle)
+            UserListView(config: config)
         })
         .onAppear {
             viewModel.fetchUserStats()

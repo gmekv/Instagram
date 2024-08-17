@@ -5,7 +5,7 @@
 //  Created by Giorgi Mekvabishvili on 07.07.24.
 //
 
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Firebase
 
 struct CommentService {

@@ -7,7 +7,6 @@
 
 import Foundation
 import FirebaseAuth
-import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 class AuthService {

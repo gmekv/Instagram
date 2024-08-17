@@ -15,8 +15,6 @@ struct SearchView: View {
     var body: some View {
         NavigationStack {
             UserListView(config: .explore)
-            .padding(.top, 8)
-            .searchable(text: $searchText, prompt: "Search...")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: User.self) { user in
                 ProfileView(user: user)
