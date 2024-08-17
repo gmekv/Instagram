@@ -8,11 +8,43 @@
 import SwiftUI
 
 struct UserListView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    @StateObject var viewModel = UserListViewModel()
+    @State private var searchText = ""
+    private let config: UserListConfig
+    
+    init(config: UserListConfig) {
+        self.config = config
     }
-}
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 12) {
+                ForEach(viewModel.users) { user in
+                    NavigationLink(value: user) {
+                        HStack {
+                            CircularProfileImageView(user: user, size: .xSmall)
+                            VStack(alignment: .leading) {
+                                Text(user.username)
+                                    .fontWeight(.semibold)
+                                if let fullname = user.fullname {
+                                    Text(fullname)
+                                }
+                            }
+                            .font(.footnote)
+                            Spacer()
+                        }
+                        .foregroundColor(.primary)
+                        .padding(.horizontal)
+                    }
+                }
+            }
+        }
+        .task {
+            await viewModel.fetchUsers(forConfig: config) }
+        }
+    }
+
 
 #Preview {
-    UserListView()
+    UserListView(config: .explore)
 }

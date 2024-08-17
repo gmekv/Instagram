@@ -11,7 +11,8 @@ import SwiftUI
 struct ProfileHeaderView: View {
     @State private var showEditProfile = false
     @EnvironmentObject var PostviewModel: PostGridViewModel
-    @ObservedObject var viewModel: ProfileViewModel
+    @StateObject var viewModel: ProfileViewModel
+
     private var user: User {
         return viewModel.user
     }
@@ -19,6 +20,7 @@ struct ProfileHeaderView: View {
     private var stats: UserStats {
         return user.stats ?? UserStats(followingCount: 0, follwersCount: 0, postsCount: 0)
     }
+    
     private var isFollowed: Bool {
         return user.isFollowed ?? false
     }
@@ -30,13 +32,14 @@ struct ProfileHeaderView: View {
             return isFollowed ? "Following" : "Follow"
         }
     }
+    
     private var buttonBackgroundColor: Color {
         if user.isCurrentUser || isFollowed {
             return .white
         } else {
-            
             return Color(.systemBlue)
-        }}
+        }
+    }
 
     private var buttonForegroundColor: Color {
         if user.isCurrentUser || isFollowed {
@@ -55,8 +58,8 @@ struct ProfileHeaderView: View {
     }
     
     init(user: User) {
-        self.viewModel = ProfileViewModel(user: user)
-    }
+          _viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
+      }
     
     var body: some View {
         VStack(spacing: 10) {
@@ -65,9 +68,13 @@ struct ProfileHeaderView: View {
                 CircularProfileImageView(user: PostviewModel.user, size: .large)
                 Spacer()
                 UserStatView(value: stats.postsCount, title: "Posts")
-                UserStatView(value: stats.follwersCount, title: "Followers")
-                UserStatView(value: stats.followingCount, title: "Following")
-            }
+                NavigationLink(value: UserListConfig.followers(uid: user.id)) {
+                    UserStatView(value: stats.follwersCount, title: "Followers")
+                }
+                NavigationLink(value: UserListConfig.following(uid: user.id)) {
+                    
+                    UserStatView(value: stats.followingCount, title: "Following")
+                }}
             .padding(.horizontal)
             //                .padding(.bottom, 4)
 
@@ -109,12 +116,20 @@ struct ProfileHeaderView: View {
 
             Divider()
         }
+        .navigationDestination(for: UserListConfig.self, destination: { config in
+            Text(config.navigationtitle)
+        })
+        .onAppear {
+            viewModel.fetchUserStats()
+            viewModel.checkIfUserIsFollowed()
+        }
         .fullScreenCover(isPresented: $showEditProfile) {
             EditProfileView(user: PostviewModel.user)
         }
     }
+    
     func handleFollowTapped() {
-        if isFollowed   {
+        if isFollowed {
             viewModel.unfollow()
         } else {
             viewModel.follow()

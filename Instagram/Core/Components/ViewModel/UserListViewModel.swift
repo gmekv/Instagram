@@ -7,14 +7,16 @@
 
 import Foundation
 
-class SearchViewModel: ObservableObject {
+@MainActor
+
+class UserListViewModel: ObservableObject {
     @Published var users = [User]()
     init() {
-        Task { try await fetchAllUsers()}
     }
     
-    @MainActor
-    func fetchAllUsers() async throws {
-        self.users = try await UserService.fetchAllUsers()
-    }
-}
+    func fetchUsers(forConfig config: UserListConfig) async  {
+        do {
+            self.users = try await UserService.fetchUsers(forConfig: config)
+        } catch {
+        }
+    }}
