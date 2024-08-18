@@ -42,6 +42,10 @@ struct PostService {
         return posts
     }
     
+    static func fetchPost(_ postId: String) async throws -> Post {
+        return try await FirebaseConstants.PostsCollection.document(postId).getDocument(as: Post.self)
+    }
+    
     static func fetchSinglePost(postId: String) async throws -> Post {
         let postRef = postsCollection.document(postId)
         var post = try await postRef.getDocument(as: Post.self)

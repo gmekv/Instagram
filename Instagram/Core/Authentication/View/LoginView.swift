@@ -23,7 +23,7 @@ struct LoginView: View {
                     TextField("Enter your email", text: $viewModel.email)
                         .textInputAutocapitalization(.none)
                         .modifier(IGTextFieldModifier())
-                    SecureField("Enter your email", text: $viewModel.password)
+                    SecureField("Enter your password", text: $viewModel.password)
                         .textInputAutocapitalization(.none)
                         .font(.subheadline)
                         .padding(12)
