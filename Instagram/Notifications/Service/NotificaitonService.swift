@@ -10,15 +10,14 @@ import FirebaseAuth
 
 class NotificaitonService {
     func fetchNotifications() async throws -> [Notification] {
-        return DeveloperPreview.shared.notifications
+        guard let currentUid = Auth.auth().currentUser?.uid else { return [] }
+        let snapshot = try await FirebaseConstants.UserNotificationCollection(uid: currentUid).getDocuments()
+        return snapshot.documents.compactMap { try? $0.data(as: Notification.self) }
     }
     
     func uploadNotification(toUid uid: String, type: NotificaitonType, post: Post? = nil) {
-            guard let currentUid = Auth.auth().currentUser?.uid, uid != currentUid else {
-                print("Cannot send notification: current user is nil or same as target user")
-                return
-            }
-            let ref = FirebaseConstants.NotifcationCollection.document(uid).collection("user-notifications").document()
+            guard let currentUid = Auth.auth().currentUser?.uid, uid != currentUid else {return}
+            let ref = FirebaseConstants.UserNotificationCollection(uid: currentUid).document()
             let notification = Notification(id: ref.documentID, postID: post?.id, timestamp: Timestamp(), notificationSenderUid: currentUid, type: type)
             guard let notifiationData = try? Firestore.Encoder().encode(notification) else {
                 print("Failed to encode notification data")

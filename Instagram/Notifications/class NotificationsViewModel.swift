@@ -7,14 +7,22 @@
 
 import Foundation
 
+@MainActor
 
 class NotificationsViewModeImage: ObservableObject {
     @Published var notifcations = [Notification]()
-    init() {
-       fetchNotificaitons()
+    private let service: NotificaitonService
+    
+    init(service: NotificaitonService) {
+        self.service = service
+        Task { await  fetchNotificaitons() }
     }
     
-    func fetchNotificaitons() {
-        self.notifcations = DeveloperPreview.shared.notifications
+    func fetchNotificaitons() async {
+        do {
+            self.notifcations = DeveloperPreview.shared.notifications
+        } catch {
+            print("debug: failed to fetch notifications \(error.localizedDescription)")
+        }
     }
 }

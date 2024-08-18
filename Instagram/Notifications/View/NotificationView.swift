@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotificationView: View {
-    @StateObject var viewModel = NotificationsViewModeImage()
+    @StateObject var viewModel = NotificationsViewModeImage(service: NotificaitonService())
     
     var body: some View {
         NavigationStack {
